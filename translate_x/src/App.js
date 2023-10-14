@@ -1,23 +1,27 @@
 import './App.css';
+import {loadVoices} from './text_to_speech_functionality';
+import {readParas} from './text_to_speech_functionality';
+import React from "react";
 
 function App() {
+  loadVoices();
+  const handleClick = () => {
+    readParas();
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <form>
+          <button onClick = {handleClick}> Click me! </button>
+        </form>
+        <script>
+          let btn = document.getElementById("btn");
+          let val = btn.value;
+          document.getElementById('btnRead').addEventListener('click', readParas);
+        </script>
       </header>
     </div>
-  );
+);
 }
 
 export default App;

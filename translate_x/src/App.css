@@ -23,6 +23,28 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+button {
+  background-color: steelblue;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.2rem 2rem;
+  margin-inline: 2rem;
+  border: none;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.controls p {
+  display: flex;
+  flex-direction: column;
+}
+.controls p * {
+  font-size: 1.2rem;
+}
 
 .App-link {
   color: #61dafb;
@@ -36,3 +58,4 @@
     transform: rotate(360deg);
   }
 }
+
