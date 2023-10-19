@@ -1,12 +1,14 @@
 import './App.css';
 import {loadVoices} from './text_to_speech_functionality';
 import {readParas} from './text_to_speech_functionality';
+import {changeVoice} from "./text_to_speech_functionality";
 import React from "react";
 
 function App() {
   loadVoices();
+  let language = "en-";
   const handleClick = () => {
-    readParas();
+    readParas(language);
   }
   return (
     <div className="App">
