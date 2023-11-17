@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import * as allFunctions from './text_to_speech_functionality';
 
 function App() {
   const [audioFile, setAudioFile] = useState(null);
@@ -25,6 +26,21 @@ function App() {
 
       if (success) {
         console.log('Script output:', output);
+        // Sean's part
+        allFunctions.loadVoices("en-");
+        allFunctions.readParas(output);
+        // const fileReader = require('./fileReader');
+        //
+        // const filePath = 'translate_x/output.txt';
+        // const fileContent = fileReader.readFile(filePath);
+        // allFunctions.readParas(fileContent);
+        // const reader = new FileReader();
+        // const fileInput = event.target;
+        // const file = fileInput.files[0];
+        // reader.onload = function (e) {
+        //   const fileContent = e.target.result;
+        //   allFunctions.readParas(fileContent);
+        // };
       } else {
         console.error('Error executing Python script:', error);
       }

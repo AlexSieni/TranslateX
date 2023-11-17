@@ -21,10 +21,9 @@ export function changeVoice(idx){
     VOICE = voices[idx];
 }
 
-export function readParas() {
+export function readParas(text_to_read) {
     //read the text from the inputs and speak it
-    const txt = 'Hello!';
-    const utter = new SpeechSynthesisUtterance(txt);
+    const utter = new SpeechSynthesisUtterance(text_to_read);
     utter.voice = VOICE;
     synth.speak(utter);
 }
