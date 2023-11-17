@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as allFunctions from './text_to_speech_functionality';
 
 function App() {
+  allFunctions.loadVoices("en-");
   const [audioFile, setAudioFile] = useState(null);
   const [isButtonHovered, setButtonHovered] = useState(false);
   const [isButtonActive, setButtonActive] = useState(false);
@@ -27,7 +28,6 @@ function App() {
       if (success) {
         console.log('Script output:', output);
         // Sean's part
-        allFunctions.loadVoices("en-");
         allFunctions.readParas(output);
         // const fileReader = require('./fileReader');
         //

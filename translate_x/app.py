@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import subprocess
+import deepltranslate
 
 app = Flask(__name__)
 CORS(app)
@@ -24,8 +25,16 @@ def run_script():
         #
         # Run the Python script and redirect stdout to a file
         output_path = 'output.txt'
-        with open(output_path, 'w') as output_file:
-            subprocess.run(['python3', 'main.py', audio_path], check=True, stdout=output_file, text=True)
+        # with open(output_path, 'w') as output_file:
+        #     result = subprocess.run(['python3', 'main.py', audio_path], check=True, stdout=output_file, text=True)
+        # output = result.stdout
+        #
+
+        with open(output_path,'w') as output_file:
+            output_file.write(output)
+
+        deepltranslate.translatedoc(output_path)
+
 
         return jsonify({'success': True, 'output': output})
     except subprocess.CalledProcessError as e:
