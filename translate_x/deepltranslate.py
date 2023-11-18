@@ -13,7 +13,7 @@ translate_url = "https://api-free.deepl.com/v2/document"
 translate_status_url = "https://api-free.deepl.com/v2/document/{0}"
 translate_download_url = "https://api-free.deepl.com/v2/document/{0}/result"
 
-def translatedoc(path):
+def translatedoc(path, language):
     """
     translates a document and prints out the subsequent 
     commands to get status and download
@@ -26,7 +26,7 @@ def translatedoc(path):
     _params = {
         "source_lang" : "EN",
         "auth_key" : AUTH_KEY,
-        "target_lang" : "ES"
+        "target_lang" : language
     }
     response = requests.post(translate_url,params=_params,files={"file":up_file})
     jdata = json.loads(response.text)
@@ -44,10 +44,11 @@ def translatedoc(path):
     # Check if done and return an ouputted file
     if 'done' in status.text:
         output = requests.get(translate_download_url.format(docid),params=_params2,allow_redirects=True)
-        open("{0}.txt".format(docid),"wb").write(output.content)
+        open("new.txt".format(docid),"wb").write(output.content)
+
 
 # the program should be run with the following structure
 # python deepltranslate.py [action] [param 1] [param 2]
-action = sys.argv[1]
-if action == "translate":
-    translatedoc(sys.argv[2])
+# action = sys.argv[1]
+# if action == "translate":
+#     translatedoc(sys.argv[2])

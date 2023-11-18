@@ -3,8 +3,8 @@ import axios from 'axios';
 import * as allFunctions from './text_to_speech_functionality';
 
 function App() {
-  allFunctions.loadVoices("en-");
   const [audioFile, setAudioFile] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState('EN'); // Default language is 'EN'
   const [isButtonHovered, setButtonHovered] = useState(false);
   const [isButtonActive, setButtonActive] = useState(false);
 
@@ -12,10 +12,16 @@ function App() {
     setAudioFile(event.target.files[0]);
   };
 
+  const handleLanguageChange = (event) => {
+    setSelectedLanguage(event.target.value);
+  };
+
   const executePythonScript = async () => {
     try {
+      // form for user input
       const formData = new FormData();
       formData.append('audio', audioFile);
+      formData.append('language', selectedLanguage);
 
       const response = await axios.post('http://localhost:5000/api/run_script', formData, {
         headers: {
@@ -27,20 +33,20 @@ function App() {
 
       if (success) {
         console.log('Script output:', output);
-        // Sean's part
+
+        // Dictionary to match syntax
+        let langDict = {};
+        langDict["EN"] = "en-";
+        langDict["ES"] = "es-";
+        langDict["FR"] = "fr-";
+        langDict["DE"] = "de-";
+        langDict["IT"] = "it-";
+
+        // loading voice of desired language
+        allFunctions.loadVoices(langDict[selectedLanguage]);
+
+        // transcript of audio in new language is sent to text-to-speech js function
         allFunctions.readParas(output);
-        // const fileReader = require('./fileReader');
-        //
-        // const filePath = 'translate_x/output.txt';
-        // const fileContent = fileReader.readFile(filePath);
-        // allFunctions.readParas(fileContent);
-        // const reader = new FileReader();
-        // const fileInput = event.target;
-        // const file = fileInput.files[0];
-        // reader.onload = function (e) {
-        //   const fileContent = e.target.result;
-        //   allFunctions.readParas(fileContent);
-        // };
       } else {
         console.error('Error executing Python script:', error);
       }
@@ -54,7 +60,26 @@ function App() {
         <div style={styles.centerContent}>
           <h1 style={styles.heading}>TranslateX</h1>
           <p style={styles.prompt}>Insert an audio file for translation</p>
+          <div style={styles.input}>
+          {/* File input */}
           <input type="file" accept="audio/*" onChange={handleFileChange} style={styles.fileInput} />
+          </div>
+          <div>
+          {/* Language selection dropdown */}
+          <label>
+            Select Language:
+            <select value={selectedLanguage} onChange={handleLanguageChange} style={styles.languageDropdown}>
+              <option value="EN">English</option>
+              <option value="ES">Spanish</option>
+              <option value="FR">French</option>
+              <option value="DE">German</option>
+              <option value="IT">Italian</option>
+            </select>
+          </label>
+          </div>
+
+          <div>
+          {/* Translate button */}
           <button
               onClick={executePythonScript}
               style={{
@@ -69,18 +94,25 @@ function App() {
           >
             Translate!
           </button>
+          </div>
         </div>
       </div>
   );
 }
 
+/************ CSS ************/
 const styles = {
   container: {
     display: 'flex',
+    flexDirection : 'column',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#f0f0f0',
+    fontFamily: 'Arial',
+  },
+  h1: {
+    fontFamily: 'Arial'
   },
   centerContent: {
     textAlign: 'center',
@@ -89,10 +121,20 @@ const styles = {
     color: '#333',
   },
   prompt: {
-    color: '#555',
+    fontFamily: 'Arial',
+    color: 'black',
     marginBottom: '10px',
   },
+  input: {
+    position: 'relative',
+    top: '0px',
+    left: '35px',
+  },
   fileInput: {
+    margin: '10px 0',
+  },
+  languageDropdown: {
+    fontFamily: 'Arial',
     margin: '10px 0',
   },
   button: {
